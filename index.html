@@ -135,7 +135,7 @@ body::before{
 
 .letter{
   position:absolute;
-  bottom:-100%;
+  bottom:-120%;
   left:10%;
   width:80%;
   background:white;
@@ -144,7 +144,7 @@ body::before{
   font-family:'Caveat', cursive;
   font-size:18px;
   color:#5e4343;
-  animation:slideUp 1.5s ease forwards 0.8s;
+  animation:slideUp 2s ease forwards 0.8s;
   box-shadow:0 10px 20px rgba(0,0,0,0.15);
 }
 
@@ -321,7 +321,7 @@ When the world feels heavy, your voice is the only place my heart feels light. Y
 
 <script>
 
-const loadingText = document.getElementById("loadingText");
+const loadingText=document.getElementById("loadingText");
 
 function typeText(text,speed=70){
   loadingText.innerHTML="";
@@ -344,13 +344,14 @@ function checkPassword(){
     typeText("loading feelings...");
 
     setTimeout(()=>{
+
       document.getElementById("bgMusic").play();
       document.getElementById("envelope").style.display="flex";
 
       setTimeout(()=>{
         document.getElementById("envelope").style.display="none";
         document.getElementById('lockscreen').style.display="none";
-      },3000);
+      },3500);
 
     },1500);
 
@@ -372,6 +373,8 @@ function nextSlide(){
 
 </body>
 </html>
+
+
 
 
 
