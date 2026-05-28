@@ -21,7 +21,7 @@ body{
   background:#f8e8e8;
   color:#5e4343;
   overflow-x:hidden;
-  transition: all 1.5s ease;
+  transition: all 1.2s ease;
 }
 
 body.unlocked{
@@ -93,30 +93,30 @@ body::before{
   font-size:14px;
 }
 
-/* ENVELOPE OPENING */
+/* ENVELOPE */
 #envelope{
   position:fixed;
   inset:0;
   display:none;
   align-items:center;
   justify-content:center;
-  background:rgba(255, 240, 245, 0.95);
+  background:rgba(255,240,245,0.96);
   z-index:9998;
   flex-direction:column;
-  animation:fadeIn 0.6s ease;
 }
 
-.envelope-box{
-  width:220px;
-  height:160px;
+.envelope{
+  width:260px;
+  height:180px;
   background:#ffb3c6;
-  border-radius:12px;
   position:relative;
-  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  border-radius:12px;
+  box-shadow:0 15px 30px rgba(0,0,0,0.2);
   overflow:hidden;
 }
 
-.envelope-flap{
+.envelope::before{
+  content:'';
   position:absolute;
   top:0;
   left:0;
@@ -133,40 +133,26 @@ body::before{
   100%{transform:rotateX(180deg);}
 }
 
-.envelope-message{
+.letter{
   position:absolute;
   bottom:-100%;
-  width:100%;
-  text-align:center;
+  left:10%;
+  width:80%;
+  background:white;
+  padding:15px;
+  border-radius:10px;
   font-family:'Caveat', cursive;
-  font-size:22px;
-  color:white;
+  font-size:18px;
+  color:#5e4343;
   animation:slideUp 1.5s ease forwards 0.8s;
+  box-shadow:0 10px 20px rgba(0,0,0,0.15);
 }
 
 @keyframes slideUp{
-  to{bottom:30px;}
+  to{bottom:20px;}
 }
 
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-
-/* HEART BURST */
-.heart-burst{
-  position:fixed;
-  font-size:24px;
-  animation:burst 1.2s ease-out forwards;
-  z-index:9997;
-}
-
-@keyframes burst{
-  0%{transform:translate(0,0) scale(1);opacity:1;}
-  100%{transform:translate(var(--x), var(--y)) scale(0);opacity:0;}
-}
-
-/* MAIN */
+/* HEARTS */
 .hearts span{
   position:fixed;
   bottom:-50px;
@@ -283,9 +269,10 @@ audio{display:none;}
 
 <!-- ENVELOPE -->
 <div id="envelope">
-  <div class="envelope-box">
-    <div class="envelope-flap"></div>
-    <div class="envelope-message">For you, Rachel ❤️</div>
+  <div class="envelope">
+    <div class="letter">
+When the world feels heavy, your voice is the only place my heart feels light. You are the calm in my chaos, the warmth in my cold nights, the reason ordinary days feel like something magical. Every moment with you feels like time is moving too fast, like the universe knows I'd stay here forever if it let me. Your smile feels like sunrise, your laugh sounds like home, and your presence alone can quiet every storm inside me. If the world asked me where my heart belongs, I wouldn't need to think — it belongs wherever you are. In every lifetime, through every vision of this world, I would still search for you and choose you again.
+    </div>
   </div>
 </div>
 
@@ -297,11 +284,6 @@ audio{display:none;}
   <span style="left:70%; animation-delay:1s">❤</span>
   <span style="left:90%; animation-delay:3s">❤</span>
 </div>
-
-<!-- MUSIC -->
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mp3">
-</audio>
 
 <header>
   <h1>For Rachel 🌸</h1>
@@ -331,53 +313,27 @@ audio{display:none;}
   </section>
 </div>
 
-<footer><section class="section">
-  <h2>A Letter For Rachel 💌</h2>
-  <p style="line-height:2; font-size:17px;">
-When the world feels heavy, your voice is the only place my heart feels light. You are the calm in my chaos, the warmth in my cold nights, the reason ordinary days feel like something magical. Every moment with you feels like time is moving too fast, like the universe knows I'd stay here forever if it let me. Your smile feels like sunrise, your laugh sounds like home, and your presence alone can quiet every storm inside me. If the world asked me where my heart belongs, I wouldn't need to think — it belongs wherever you are. In every lifetime, through every vision of this world, I would still search for you and choose you again.
-  </p>
-</section>
+<footer>made softly for Rachel ♡</footer>
 
-made softly for Rachel ♡</footer>
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
 
 <script>
 
 const loadingText = document.getElementById("loadingText");
 
-function typeText(text, speed=70){
-  loadingText.innerHTML = "";
-  let i = 0;
+function typeText(text,speed=70){
+  loadingText.innerHTML="";
+  let i=0;
   function type(){
-    if(i < text.length){
-      loadingText.innerHTML += text.charAt(i);
+    if(i<text.length){
+      loadingText.innerHTML+=text.charAt(i);
       i++;
-      setTimeout(type, speed);
+      setTimeout(type,speed);
     }
   }
   type();
-}
-
-function heartBurst(){
-  for(let i=0;i<25;i++){
-    const h = document.createElement("div");
-    h.className="heart-burst";
-    h.innerHTML="❤";
-    h.style.left="50%";
-    h.style.top="50%";
-    h.style.setProperty("--x",((Math.random()-0.5)*400)+"px");
-    h.style.setProperty("--y",((Math.random()-0.5)*400)+"px");
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),1200);
-  }
-}
-
-function openEnvelope(cb){
-  const env=document.getElementById("envelope");
-  env.style.display="flex";
-  setTimeout(()=>{
-    env.style.display="none";
-    cb();
-  },1800);
 }
 
 function checkPassword(){
@@ -388,16 +344,15 @@ function checkPassword(){
     typeText("loading feelings...");
 
     setTimeout(()=>{
-      heartBurst();
-      document.body.classList.add("unlocked");
-
       document.getElementById("bgMusic").play();
+      document.getElementById("envelope").style.display="flex";
 
-      openEnvelope(()=>{
+      setTimeout(()=>{
+        document.getElementById("envelope").style.display="none";
         document.getElementById('lockscreen').style.display="none";
-      });
+      },3000);
 
-    },1800);
+    },1500);
 
   } else {
     document.getElementById('error').innerText="wrong password :(";
@@ -417,4 +372,6 @@ function nextSlide(){
 
 </body>
 </html>
+
+
 
