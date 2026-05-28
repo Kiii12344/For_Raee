@@ -1,378 +1,100 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>For Rachel ❤️</title>
+export default function LoveSite() {
+  const [password, setPassword] = useState("");
+  const [unlocked, setUnlocked] = useState(false);
+  const [opened, setOpened] = useState(false);
 
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  const correctPassword = "rachel";
 
-<style>
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  font-family:'Poppins', sans-serif;
-  background:#f8e8e8;
-  color:#5e4343;
-  overflow-x:hidden;
-  transition: all 1.2s ease;
-}
-
-body.unlocked{
-  background:#fff3f7;
-  box-shadow: inset 0 0 200px rgba(255, 120, 160, 0.25);
-}
-
-body::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  background-image: radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px);
-  background-size:24px 24px;
-  opacity:0.4;
-  pointer-events:none;
-}
-
-/* LOCK SCREEN */
-#lockscreen{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(135deg,#ffd6e0,#fff1f5);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  z-index:9999;
-  text-align:center;
-  padding:20px;
-}
-
-#lockscreen h1{
-  font-family:'Caveat', cursive;
-  font-size:60px;
-  color:#d36b8b;
-}
-
-#lockscreen input{
-  margin-top:20px;
-  padding:12px 18px;
-  border-radius:20px;
-  border:1px solid #ddd;
-  outline:none;
-  font-size:16px;
-  text-align:center;
-}
-
-#lockscreen button{
-  margin-top:15px;
-  padding:12px 22px;
-  border:none;
-  border-radius:25px;
-  background:#ff7aa2;
-  color:white;
-  cursor:pointer;
-}
-
-#loadingText{
-  margin-top:15px;
-  font-family:'Caveat', cursive;
-  font-size:28px;
-  color:#c95d83;
-  min-height:40px;
-}
-
-#error{
-  margin-top:10px;
-  color:red;
-  font-size:14px;
-}
-
-/* ENVELOPE */
-#envelope{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,240,245,0.96);
-  z-index:9998;
-  flex-direction:column;
-}
-
-.envelope{
-  width:260px;
-  height:180px;
-  background:#ffb3c6;
-  position:relative;
-  border-radius:12px;
-  box-shadow:0 15px 30px rgba(0,0,0,0.2);
-  overflow:hidden;
-}
-
-.envelope::before{
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#ff8fab;
-  clip-path: polygon(0 0, 100% 0, 50% 55%);
-  transform-origin:top;
-  animation:openFlap 1.2s ease forwards;
-}
-
-@keyframes openFlap{
-  0%{transform:rotateX(0deg);}
-  100%{transform:rotateX(180deg);}
-}
-
-.letter{
-  position:absolute;
-  bottom:-120%;
-  left:10%;
-  width:80%;
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  font-family:'Caveat', cursive;
-  font-size:18px;
-  color:#5e4343;
-  animation:slideUp 2s ease forwards 0.8s;
-  box-shadow:0 10px 20px rgba(0,0,0,0.15);
-}
-
-@keyframes slideUp{
-  to{bottom:20px;}
-}
-
-/* HEARTS */
-.hearts span{
-  position:fixed;
-  bottom:-50px;
-  font-size:22px;
-  animation:float 10s linear infinite;
-  opacity:0.6;
-}
-
-@keyframes float{
-  0%{transform:translateY(0);opacity:0;}
-  10%{opacity:0.7;}
-  100%{transform:translateY(-120vh);opacity:0;}
-}
-
-header{
-  text-align:center;
-  padding:80px 20px 40px;
-}
-
-header h1{
-  font-family:'Caveat', cursive;
-  font-size:82px;
-  color:#d36b8b;
-}
-
-.container{
-  width:92%;
-  max-width:1100px;
-  margin:auto;
-  padding-bottom:100px;
-}
-
-.section{
-  background:#fffaf8;
-  margin:35px 0;
-  padding:35px;
-  border-radius:28px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
-
-.section h2{
-  font-family:'Caveat', cursive;
-  font-size:48px;
-  margin-bottom:20px;
-  color:#c95d83;
-}
-
-.album{
-  display:flex;
-  transition:transform 0.6s ease;
-}
-
-.photo-card{
-  min-width:100%;
-  padding:20px;
-}
-
-.polaroid{
-  background:white;
-  padding:14px 14px 28px;
-  border-radius:6px;
-  box-shadow:0 10px 20px rgba(0,0,0,0.12);
-}
-
-.polaroid img{
-  width:100%;
-  height:420px;
-  object-fit:cover;
-}
-
-.caption{
-  text-align:center;
-  margin-top:16px;
-  font-family:'Caveat', cursive;
-  font-size:30px;
-}
-
-button{
-  border:none;
-  background:#ff8fab;
-  color:white;
-  padding:14px 24px;
-  border-radius:30px;
-  cursor:pointer;
-}
-
-button:hover{background:#ff6f91;}
-
-footer{
-  text-align:center;
-  padding:50px;
-  font-family:'Caveat', cursive;
-  font-size:34px;
-  color:#c25b81;
-}
-
-audio{display:none;}
-
-</style>
-</head>
-<body>
-
-<!-- LOCK SCREEN -->
-<div id="lockscreen">
-  <h1>Hi Rachel 🌸</h1>
-  <p>This scrapbook is waiting for you</p>
-
-  <input type="password" id="password" placeholder="Enter password..." />
-  <button onclick="checkPassword()">Unlock ❤️</button>
-
-  <div id="loadingText"></div>
-  <div id="error"></div>
-</div>
-
-<!-- ENVELOPE -->
-<div id="envelope">
-  <div class="envelope">
-    <div class="letter">
-When the world feels heavy, your voice is the only place my heart feels light. You are the calm in my chaos, the warmth in my cold nights, the reason ordinary days feel like something magical. Every moment with you feels like time is moving too fast, like the universe knows I'd stay here forever if it let me. Your smile feels like sunrise, your laugh sounds like home, and your presence alone can quiet every storm inside me. If the world asked me where my heart belongs, I wouldn't need to think — it belongs wherever you are. In every lifetime, through every vision of this world, I would still search for you and choose you again.
-    </div>
-  </div>
-</div>
-
-<!-- HEARTS -->
-<div class="hearts">
-  <span style="left:10%">❤</span>
-  <span style="left:30%; animation-delay:2s">❤</span>
-  <span style="left:50%; animation-delay:4s">❤</span>
-  <span style="left:70%; animation-delay:1s">❤</span>
-  <span style="left:90%; animation-delay:3s">❤</span>
-</div>
-
-<header>
-  <h1>For Rachel 🌸</h1>
-</header>
-
-<div class="container">
-  <section class="section">
-    <h2>Mini Photo Album 📸</h2>
-
-    <div class="album" id="album">
-      <div class="photo-card">
-        <div class="polaroid">
-          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9">
-          <div class="caption">your smile stays in my head 💕</div>
-        </div>
-      </div>
-
-      <div class="photo-card">
-        <div class="polaroid">
-          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1">
-          <div class="caption">some moments feel like home 🌷</div>
-        </div>
-      </div>
-    </div>
-
-    <button onclick="nextSlide()">Next →</button>
-  </section>
-</div>
-
-<footer>made softly for Rachel ♡</footer>
-
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mp3">
-</audio>
-
-<script>
-
-const loadingText=document.getElementById("loadingText");
-
-function typeText(text,speed=70){
-  loadingText.innerHTML="";
-  let i=0;
-  function type(){
-    if(i<text.length){
-      loadingText.innerHTML+=text.charAt(i);
-      i++;
-      setTimeout(type,speed);
+  function handleUnlock() {
+    if (password.toLowerCase() === correctPassword) {
+      setUnlocked(true);
+    } else {
+      alert("Wrong password 😅 try again");
     }
   }
-  type();
+
+  const photos = [
+    "/photos/rachel1.jpg",
+    "/photos/rachel2.jpg",
+    "/photos/rachel3.jpg",
+  ];
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-pink-50 p-6">
+      {!unlocked ? (
+        <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md text-center space-y-4">
+          <h1 className="text-2xl font-bold">🔒 Private Page</h1>
+          <p className="text-gray-600">Enter the password to continue</p>
+
+          <input
+            type="password"
+            className="w-full p-3 border rounded-xl"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter password"
+          />
+
+          <button
+            onClick={handleUnlock}
+            className="w-full bg-pink-500 text-white py-2 rounded-xl"
+          >
+            Unlock
+          </button>
+        </div>
+      ) : !opened ? (
+        <motion.div className="text-center space-y-6">
+          <h1 className="text-3xl font-bold text-pink-600">
+            You unlocked it 💌
+          </h1>
+          <p>Click the envelope</p>
+
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setOpened(true)}
+            className="text-7xl cursor-pointer"
+          >
+            ✉️
+          </motion.div>
+        </motion.div>
+      ) : (
+        <motion.div className="max-w-2xl bg-white p-6 rounded-2xl shadow-xl space-y-6 text-center">
+          <h2 className="text-2xl font-bold text-pink-600">
+            Dear Rachel 💖
+          </h2>
+
+          <p className="whitespace-pre-line text-gray-700 leading-relaxed">
+            When the world feels heavy, your voice is the only place my heart feels light.  
+            You are the calm in my chaos, the warmth in my cold nights, the reason ordinary days feel like something magical.  
+            Every moment with you feels like time is moving too fast, like the universe knows I'd stay here forever if it let me.  
+            
+            Your smile feels like sunrise, your laugh sounds like home, and your presence alone can quiet every storm inside me.  
+            
+            If the world asked me where my heart belongs, I wouldn't need to think — it belongs wherever you are.  
+            
+            In every lifetime, through every version of this world, I would still search for you and choose you again.
+          </p>
+
+          <div className="grid grid-cols-3 gap-3">
+            {photos.map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                className="h-32 w-full object-cover rounded-xl shadow"
+                alt="Rachel"
+              />
+            ))}
+          </div>
+
+          <div className="text-2xl">🌸✨💗</div>
+        </motion.div>
+      )}
+    </div>
+  );
 }
-
-function checkPassword(){
-  const pass=document.getElementById('password').value;
-
-  if(pass.toLowerCase()==="rachel"){
-
-    typeText("loading feelings...");
-
-    setTimeout(()=>{
-
-      document.getElementById("bgMusic").play();
-      document.getElementById("envelope").style.display="flex";
-
-      setTimeout(()=>{
-        document.getElementById("envelope").style.display="none";
-        document.getElementById('lockscreen').style.display="none";
-      },3500);
-
-    },1500);
-
-  } else {
-    document.getElementById('error').innerText="wrong password :(";
-    typeText("access denied...");
-  }
-}
-
-let index=0;
-const album=document.getElementById("album");
-
-function nextSlide(){
-  index=(index+1)%2;
-  album.style.transform=`translateX(-${index*100}%)`;
-}
-
-</script>
-
-</body>
-</html>
 
 
 
